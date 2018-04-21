@@ -16,7 +16,7 @@ window.onload = function () {
 
     chrome.bookmarks.getTree(function (topNode) {
         var bmarkNode = topNode[0]["children"];
-        console.log(bmarkNode);
+        // console.log(bmarkNode);
         getInitList(bmarkNode);
         removeEmpty(dataArray);
         removeEmpty(navArray);
@@ -116,7 +116,7 @@ window.onload = function () {
                 }
                 var url   = childrenItem.url;
                 var index = find(url, '/', 2);
-                console.log(childrenItem);
+                // console.log(childrenItem);
                 // http://statics.dnspod.cn/proxy_favicon/_/favicon?domain=
                 dataArray[childrenItem.parentId].push({
                     id   : childrenItem.id || '',

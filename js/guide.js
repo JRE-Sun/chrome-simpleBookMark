@@ -44,6 +44,11 @@ window.onload = function () {
             }
         }
         dataArray[0] = allData;
+
+        for (var i in dataArray) {
+            dataArray[i].reverse();
+        }
+
         new Vue({
             el     : '#app',
             data   : function () {
@@ -74,7 +79,7 @@ window.onload = function () {
                 clickNav      : function (index) {
                     this.index       = index;
                     this.searchValue = '';
-                    this.isEmpty = !this.isEmpty;
+                    this.isEmpty     = !this.isEmpty;
                 },
                 search        : function () {
                     var list = this.list[0],
@@ -85,7 +90,7 @@ window.onload = function () {
                         }
                     }
                     this.searchReasult = data;
-                    this.isEmpty = !this.isEmpty;
+                    this.isEmpty       = !this.isEmpty;
                 }
             }
         });

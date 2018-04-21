@@ -1,0 +1,136 @@
+html,body{
+    margin: 0;
+    padding: 0;
+    background: #fcfcfa;
+    font-size: 15px;
+}
+
+#app{  
+    position: relative;
+    width: 100%;
+    padding: 10px 0 30px 290px;
+    box-sizing: border-box;
+    max-width: 1080px;
+}
+input{
+    font-size: 15px;
+}
+.app_header{
+    background: #fcfcfa;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 280px;
+    padding:0 10px;
+    box-sizing: border-box;
+    max-width: 1080px;
+    border-right: 1px solid #eee;
+}
+.app_search-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.app_search-wrap label{
+    width: 100%;
+    max-width: 320px;
+    position: relative;
+    text-align: center;
+}
+#app_search{
+    padding: 10px 45px 10px 15px;
+    width: 90%;
+    outline: none;
+    border: 1px solid #2885c3;
+    border-radius: 30px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+.app_clear{
+    display: block;
+    width: 27px;
+    height: 27px;
+    top: 50%;
+    cursor: pointer;
+    position: absolute;
+    right: 21px;
+    transform: translateY(-50%);
+}
+
+.app_clear:after,.app_clear:before{
+    position: absolute;
+    content: '';
+    width: 8px;
+    height: 1px;
+    background: #333;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) rotate(45deg);
+}
+
+.app_clear:before{
+    transform: translate(-50%,-50%) rotate(-45deg);
+}
+
+.app_nav{
+    margin: 12px 0 6px 0;
+}
+
+.app_nav a{
+    padding: 5px 15px;
+    display: inline-block;
+    cursor: pointer;
+    margin: 3px;
+}
+
+.app_content{
+    overflow: hidden;
+}
+
+.app_content a{
+    padding: 0 15px;
+    display: flex;
+    text-align: left;
+    line-height: 2.4;
+    text-decoration: none;
+    color: #3d658d;
+    align-items: center;
+}
+
+.app_content a:hover,.app_nav a:hover,.active{
+    text-decoration: none;
+    background: #2085c5;
+    color: #fff!important;
+    border-radius: 3px;
+}
+
+.app_content a img{
+    background-repeat: no-repeat;
+    height: 16px;
+    margin: 0 18px 0 0px;
+    width: 16px;
+    vertical-align: middle;
+    min-width: 16px;
+}
+
+[v-cloak]{
+    display: none!important;
+}
+
+#app_footer{
+    position: fixed;
+    bottom: 8px;
+    right: 15px;
+}
+
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .3s;
+  }
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+}

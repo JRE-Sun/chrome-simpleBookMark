@@ -1,0 +1,18 @@
+{
+  "name": "Simple书签",
+  "description": "在新标签页浏览你的书签。",
+  "manifest_version": 2,
+  "version": "0.1",
+  "icons": {
+    "32": "img/icon32.png",
+    "128": "img/icon128.png"
+  },
+  "offline_enabled":true,
+  "permissions": [
+    "bookmarks"
+  ],
+  "chrome_url_overrides": {
+    "newtab": "guide.html"
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}

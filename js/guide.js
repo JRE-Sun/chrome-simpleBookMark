@@ -7,10 +7,11 @@ window.onload = function () {
             }
         }
     }
-    var dataArray = [];
-    var navArray = [];
-    var homeIndex = 0;
-    var excludedArray = ['其他'];
+
+    var dataArray          = [];
+    var navArray           = [];
+    var homeIndex          = 0;
+    var excludedArray      = ['其他'];
     var excludedIndexArray = [];
 
     chrome.bookmarks.getTree(function (topNode) {
@@ -32,43 +33,48 @@ window.onload = function () {
         }
         var allData = [];
         for (var i in dataArray) {
-            if(excludedIndexArray.length>0){
+            if (excludedIndexArray.length > 0) {
                 for (var p in excludedIndexArray) {
                     if (excludedIndexArray[p] != i) {
                         allData = allData.concat(dataArray[i]);
                     }
                 }
-            }else{
+            } else {
                 allData = allData.concat(dataArray[i]);
             }
         }
         dataArray[0] = allData;
-
         new Vue({
-            el: '#app',
-            data: function () {
+            el     : '#app',
+            data   : function () {
                 return {
-                    searchValue: '',
+                    searchValue  : '',
                     searchReasult: [],
-                    index: homeIndex,
-                    list: dataArray,
-                    nav: navArray,
+                    index        : homeIndex,
+                    list         : dataArray,
+                    nav          : navArray,
                 }
             },
-            watch: {
+            watch  : {
                 searchValue: function () {
                     this.search();
                 }
             },
             methods: {
-                clear: function () {
+                clear         : function () {
                     this.searchValue = '';
                 },
-                clickNav: function (index) {
-                    this.index = index;
+                deleteBookMark: function (id, listItemIndex) {
+                    var self = this;
+                    chrome.bookmarks.remove(id, function () {
+                        self.list[self.index].splice(listItemIndex, 1);
+                    });
+                },
+                clickNav      : function (index) {
+                    this.index       = index;
                     this.searchValue = '';
                 },
-                search: function () {
+                search        : function () {
                     var list = this.list[0],
                         data = [];
                     for (var i in list) {
@@ -81,6 +87,7 @@ window.onload = function () {
             }
         });
     });
+
     function find(str, cha, num) {
         var x = str.indexOf(cha);
         for (var i = 0; i < num; i++) {
@@ -88,15 +95,16 @@ window.onload = function () {
         }
         return x;
     }
+
     function getInitList(children) {
         for (var i in children) {
             var childrenItem = children[i];
             if (typeof childrenItem.children != 'undefined') {
-                navArray[childrenItem.id] = '';
+                navArray[childrenItem.id]  = '';
                 dataArray[childrenItem.id] = [];
                 // 不为空,就是说当前为分类
-                navArray[childrenItem.id] = {
-                    id: childrenItem.id,
+                navArray[childrenItem.id]  = {
+                    id   : childrenItem.id,
                     title: childrenItem.title
                 };
                 getInitList(childrenItem);
@@ -106,14 +114,16 @@ window.onload = function () {
                     getInitList(childrenItem);
                     return;
                 }
-                var url = childrenItem.url;
+                var url   = childrenItem.url;
                 var index = find(url, '/', 2);
+                console.log(childrenItem);
                 // http://statics.dnspod.cn/proxy_favicon/_/favicon?domain=
                 dataArray[childrenItem.parentId].push({
+                    id   : childrenItem.id || '',
                     title: childrenItem.title,
-                    url: url,
-                    pid: childrenItem.parentId,
-                    icon: url.substr(0, index) + '/favicon.ico',
+                    url  : url,
+                    pid  : childrenItem.parentId,
+                    icon : url.substr(0, index) + '/favicon.ico',
                 });
             }
         }

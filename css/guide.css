@@ -1,56 +1,60 @@
-html,body{
+html, body {
     margin: 0;
     padding: 0;
-    background: #fcfcfa;
+    background: #FCFCFA;
     font-size: 15px;
 }
 
-#app{  
+#app {
     position: relative;
     width: 100%;
     padding: 10px 0 30px 290px;
     box-sizing: border-box;
     max-width: 1080px;
 }
-input{
+
+input {
     font-size: 15px;
 }
-.app_header{
-    background: #fcfcfa;
+
+.app_header {
+    background: #FCFCFA;
     position: fixed;
     top: 0;
     left: 0;
     height: 100%;
     width: 280px;
-    padding:0 10px;
+    padding: 0 10px;
     box-sizing: border-box;
     max-width: 1080px;
-    border-right: 1px solid #eee;
+    border-right: 1px solid #EEE;
 }
-.app_search-wrap{
+
+.app_search-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 30px;
 }
 
-.app_search-wrap label{
+.app_search-wrap label {
     width: 100%;
     max-width: 320px;
     position: relative;
     text-align: center;
 }
-#app_search{
+
+#app_search {
     padding: 10px 45px 10px 15px;
     width: 90%;
     outline: none;
-    border: 1px solid #2885c3;
+    border: 1px solid #2885C3;
     border-radius: 30px;
     box-sizing: border-box;
     font-size: 15px;
 }
 
-.app_clear{
+.app_clear,app_delete{
     display: block;
     width: 27px;
     height: 27px;
@@ -61,7 +65,7 @@ input{
     transform: translateY(-50%);
 }
 
-.app_clear:after,.app_clear:before{
+.app_clear:after, .app_clear:before {
     position: absolute;
     content: '';
     width: 8px;
@@ -69,46 +73,68 @@ input{
     background: #333;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%) rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.app_clear:before{
-    transform: translate(-50%,-50%) rotate(-45deg);
+.app_clear:before {
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-.app_nav{
+.app_nav {
     margin: 12px 0 6px 0;
 }
 
-.app_nav a{
+.app_nav a {
     padding: 5px 15px;
     display: inline-block;
     cursor: pointer;
     margin: 3px;
 }
 
-.app_content{
+.app_content {
     overflow: hidden;
 }
 
-.app_content a{
+.app_content_item{
+    display: flex;
+    align-items: center;
+}
+
+.app_content a {
     padding: 0 15px;
     display: flex;
     text-align: left;
     line-height: 2.4;
+    flex: 1;
     text-decoration: none;
-    color: #3d658d;
+    color: #3D658D;
     align-items: center;
+    position: relative;
+    background-clip: padding-box;
 }
 
-.app_content a:hover,.app_nav a:hover,.active{
+.app_delete{
+    background: #eee;
+    cursor: pointer;
+    color: #999;
+    padding: 3px 10px;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    font-size: 12px
+}
+
+.app_content a:hover .app_delete{
+    background: red;
+}
+
+.app_content a:hover, .app_nav a:hover, .active,.app_delete:hover{
     text-decoration: none;
-    background: #2085c5;
-    color: #fff!important;
+    background: #2085C5;
+    color: #FFF !important;
     border-radius: 3px;
 }
 
-.app_content a img{
+.app_content a img {
     background-repeat: no-repeat;
     height: 16px;
     margin: 0 18px 0 0px;
@@ -117,20 +143,21 @@ input{
     min-width: 16px;
 }
 
-[v-cloak]{
-    display: none!important;
+[v-cloak] {
+    display: none !important;
 }
 
-#app_footer{
+#app_footer {
     position: fixed;
     bottom: 8px;
     right: 15px;
 }
 
-
 .fade-enter-active, .fade-leave-active {
     transition: opacity .3s;
-  }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+{
     opacity: 0;
 }

@@ -1,35 +1,42 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="css/guide.css">
     <title>Simple书签</title>
-  </head>
-  <body>
-    <div id="app" v-cloak>
-      <div class="app_header">
-            <div class="app_search-wrap">
-              <label for="app_search"><input type="text" v-model="searchValue" placeholder="搜索书签"  id="app_search">
-                <transition name="fade">  
-                  <i @click="clear" v-show="searchValue != ''" class="app_clear"></i>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="app_header">
+        <div class="app_search-wrap">
+            <label for="app_search"><input type="text" v-model="searchValue" placeholder="搜索书签" id="app_search">
+                <transition name="fade">
+                    <i @click="clear" v-show="searchValue != ''" class="app_clear"></i>
                 </transition>
-              </label>
-            </div>
-            <div class="app_nav">
-              <a v-for="(navItem,navItemIndex) in nav" :class="(index == navItemIndex && searchValue == '') ? 'active' : ''" @click="clickNav(navItemIndex)">{{ navItem.title }}</a>
-            </div>
-      </div>
-      <div class="app_content">
-        <transition-group name="fade">
-          <a target="_blank" v-for="(listItem,listItemIndex) in (searchValue==''?list[index]:searchReasult)" v-bind:key="listItemIndex" :href="listItem.url"><img :src="listItem.icon" alt=""> {{ listItem.title }}</a>
-        </transition-group>
-      </div>
-      <div id="app_footer">
-          <p>Simple书签 by JreSun</p>
-      </div>
+            </label>
+        </div>
+        <div class="app_nav">
+            <a v-for="(navItem,navItemIndex) in nav"
+               :class="(index == navItemIndex && searchValue == '') ? 'active' : ''" @click="clickNav(navItemIndex)">{{
+                navItem.title }}</a>
+        </div>
     </div>
-    <script src="js/vue.min.js"></script>
-    <script src="js/guide.js"></script>
-  </body>
+    <div class="app_content">
+        <transition-group name="fade">
+            <div class="app_content_item" v-for="(listItem,listItemIndex) in (searchValue==''?list[index]:searchReasult)"
+                 v-bind:key="listItemIndex">
+                <a target="_blank" :href="listItem.url"><img :src="listItem.icon" alt="">{{ listItem.title
+                    }}</a>
+                <span @click="deleteBookMark(listItem.id,listItemIndex)" class="app_delete">删除</span>
+            </div>
+        </transition-group>
+    </div>
+    <div id="app_footer">
+        <p>Simple书签 by JreSun</p>
+    </div>
+</div>
+<script src="js/vue.js"></script>
+<script src="js/guide.js"></script>
+</body>
 </html>

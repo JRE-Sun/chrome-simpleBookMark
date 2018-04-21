@@ -48,6 +48,7 @@ window.onload = function () {
             el     : '#app',
             data   : function () {
                 return {
+                    isEmpty      : true,
                     searchValue  : '',
                     searchReasult: [],
                     index        : homeIndex,
@@ -73,6 +74,7 @@ window.onload = function () {
                 clickNav      : function (index) {
                     this.index       = index;
                     this.searchValue = '';
+                    this.isEmpty = !this.isEmpty;
                 },
                 search        : function () {
                     var list = this.list[0],
@@ -83,6 +85,7 @@ window.onload = function () {
                         }
                     }
                     this.searchReasult = data;
+                    this.isEmpty = !this.isEmpty;
                 }
             }
         });

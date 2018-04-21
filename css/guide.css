@@ -8,7 +8,7 @@ html, body {
 #app {
     position: relative;
     width: 100%;
-    padding: 10px 0 30px 290px;
+    padding: 10px 0 30px 270px;
     box-sizing: border-box;
     max-width: 1080px;
 }
@@ -23,7 +23,7 @@ input {
     top: 0;
     left: 0;
     height: 100%;
-    width: 280px;
+    width: 260px;
     padding: 0 10px;
     box-sizing: border-box;
     max-width: 1080px;
@@ -54,7 +54,7 @@ input {
     font-size: 15px;
 }
 
-.app_clear,app_delete{
+.app_clear, app_delete {
     display: block;
     width: 27px;
     height: 27px;
@@ -82,6 +82,7 @@ input {
 
 .app_nav {
     margin: 12px 0 6px 0;
+    text-align: center;
 }
 
 .app_nav a {
@@ -93,9 +94,10 @@ input {
 
 .app_content {
     overflow: hidden;
+    padding-right: 20px;
 }
 
-.app_content_item{
+.app_content_item {
     display: flex;
     align-items: center;
 }
@@ -113,8 +115,8 @@ input {
     background-clip: padding-box;
 }
 
-.app_delete{
-    background: #eee;
+.app_delete {
+    background: #EEE;
     cursor: pointer;
     color: #999;
     padding: 3px 10px;
@@ -123,11 +125,11 @@ input {
     font-size: 12px
 }
 
-.app_content a:hover .app_delete{
+.app_content a:hover .app_delete {
     background: red;
 }
 
-.app_content a:hover, .app_nav a:hover, .active,.app_delete:hover{
+.app_content a:hover, .app_nav a:hover, .active, .app_delete:hover {
     text-decoration: none;
     background: #2085C5;
     color: #FFF !important;
@@ -143,6 +145,20 @@ input {
     min-width: 16px;
 }
 
+.app_empty {
+    text-align: center;
+    margin: 30px;
+    font-size: 24px;
+}
+
+.app_empty_true {
+    color: #666;
+}
+
+.app_empty_false {
+    color: #1600FF;
+}
+
 [v-cloak] {
     display: none !important;
 }
@@ -153,6 +169,11 @@ input {
     right: 15px;
 }
 
+#app_footer p {
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+}
+
 .fade-enter-active, .fade-leave-active {
     transition: opacity .3s;
 }
@@ -160,4 +181,19 @@ input {
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
 {
     opacity: 0;
+}
+
+@media all and (min-width: 1500px) {
+    #app {
+        max-width: 100%;
+    }
+
+    .app_content span {
+        flex-wrap: wrap;
+        display: flex;
+    }
+
+    .app_content_item {
+        width: 45%;
+    }
 }

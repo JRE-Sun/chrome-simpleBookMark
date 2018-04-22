@@ -7,9 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>注入css</title>
     <style>
-        body,html{
+        body, html {
             height: 100%;
         }
+
         .style-value {
             width: 100%;
             overflow-y: scroll;
@@ -18,10 +19,27 @@
             border: 1px solid #EEE;
             min-height: 300px;
         }
+
+        .tip {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 0;
+            width: 30%;
+            right: 0;
+            text-align: center;
+            margin: 0 auto;
+            padding: 10px;
+            border-radius: 30px;
+            background: #3B7BD6;
+            color: #FFF;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
-<p>需要屏蔽的样式:样式会自动保存哦!</p>
+<p class="tip">保存成功</p>
+<p>需要屏蔽的样式:编辑框失去焦点会自动保存的哦!</p>
 <textarea class="style-value">
 </textarea>
 <script src="js/options.js"></script>

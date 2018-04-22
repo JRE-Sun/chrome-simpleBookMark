@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/bookMark.css">
     <title>Simple书签</title>
 </head>
 <body>
@@ -33,7 +33,10 @@
             </div>
         </transition-group>
         <transition name="fade">
-            <div class="app_empty" :class="isEmpty ? 'app_empty_true' : 'app_empty_false'" v-show="(searchValue !='' && searchReasult.length==0) || (searchValue=='' && list[index].length==0)">暂无数据!</div>
+            <div class="app_empty" :class="isEmpty ? 'app_empty_true' : 'app_empty_false'"
+                 v-show="(searchValue !='' && searchReasult.length==0) || (searchValue=='' && list[index].length==0)">
+                暂无数据!
+            </div>
         </transition>
     </div>
     <div id="app_footer">
@@ -41,6 +44,6 @@
     </div>
 </div>
 <script src="js/vue.min.js"></script>
-<script src="js/guide.js"></script>
+<script src="js/bookMark.js"></script>
 </body>
 </html>

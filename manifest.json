@@ -7,12 +7,30 @@
     "32": "img/icon32.png",
     "128": "img/icon128.png"
   },
-  "offline_enabled":true,
-  "permissions": [
-    "bookmarks"
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "js/append.js"
+      ],
+      "all_frames": true,
+      "run_at": "document_end"
+    }
   ],
+  "offline_enabled": true,
+  "permissions": [
+    "bookmarks",
+    "storage"
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true,
+    "open_in_tab": true
+  },
   "chrome_url_overrides": {
-    "newtab": "guide.html"
+    "newtab": "bookMark.html"
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

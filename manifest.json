@@ -22,7 +22,8 @@
   "offline_enabled": true,
   "permissions": [
     "bookmarks",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "options_ui": {
     "page": "options.html",

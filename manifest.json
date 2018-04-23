@@ -16,6 +16,16 @@
         "js/append.js"
       ],
       "all_frames": true,
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "js/append.js"
+      ],
+      "all_frames": true,
       "run_at": "document_end"
     }
   ],
@@ -35,6 +45,10 @@
     "chrome_style": true,
     "open_in_tab": true
   },
+  "web_accessible_resources": [
+    "img/right.png",
+    "img/down.png"
+  ],
   "chrome_url_overrides": {
     "newtab": "bookMark.html"
   },

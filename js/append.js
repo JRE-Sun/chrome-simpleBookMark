@@ -17,15 +17,17 @@ window.onload = function () {
 };
 
 (function () {
-    var isMouseDown             = false,
-        startPosition           = {},
-        endPosition             = {},
-        isRight                 = false,
-        isBottom                = false;
-    var body                    = document.querySelector('body');
-    var fixedDiv                = document.createElement('div');
+    var isMouseDown   = false,
+        startPosition = {},
+        endPosition   = {},
+        isRight       = false,
+        isBottom      = false,
+        timer         = null,
+        body          = document.querySelector('body'),
+        fixedDiv      = document.createElement('div'),
+        appendContent = document.createElement('div');
+
     fixedDiv.style.cssText      = 'position:fixed;left:0;right:0;top:0;bottom:0;background:transparent;';
-    var appendContent           = document.createElement('div');
     appendContent.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:5px;background:#333;';
     fixedDiv.style.display      = 'none';
 
@@ -54,6 +56,10 @@ window.onload = function () {
                 appendContent.appendChild(img);
                 isBottom = true;
             }
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                mouseUpEvent();
+            }, 2400);
         }
     }, false);
     document.addEventListener('mousedown', function (e) {
@@ -74,10 +80,7 @@ window.onload = function () {
         return false;
     }
 
-    document.addEventListener('mouseup', function (e) {
-        if (e.button != 2) {
-            return;
-        }
+    function mouseUpEvent() {
         // 同时为假,直接return
         if (!isBottom && !isRight) {
             return;
@@ -98,6 +101,13 @@ window.onload = function () {
             }
         });
         isBottom = isRight = false;
+    }
+
+    document.addEventListener('mouseup', function (e) {
+        if (e.button != 2) {
+            return;
+        }
+        mouseUpEvent();
         e.stopPropagation();
         e.preventDefault();
         return false;

@@ -27,7 +27,7 @@
             <div class="app_content_item"
                  v-for="(listItem,listItemIndex) in (searchValue==''?list[index]:searchReasult)"
                  v-bind:key="listItemIndex">
-                <a target="_blank" :href="listItem.url"><img :src="listItem.icon" alt="">{{ listItem.title
+                <a :title="listItem.url" target="_blank" :href="listItem.url"><img :src="listItem.icon" alt="">{{ listItem.title
                     }}</a>
                 <span @click="deleteBookMark(listItem.id,listItemIndex)" class="app_delete">删除</span>
             </div>
@@ -42,6 +42,7 @@
     <div id="app_footer">
         <p>Simple书签 by JreSun</p>
     </div>
+    <p class="tip" v-show="isDeleteSuccess">删除成功</p>
 </div>
 <script src="js/vue.min.js"></script>
 <script src="js/bookMark.js"></script>

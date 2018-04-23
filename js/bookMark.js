@@ -16,7 +16,6 @@ window.onload = function () {
 
     chrome.bookmarks.getTree(function (topNode) {
         var bmarkNode = topNode[0]["children"];
-        // console.log(bmarkNode);
         getInitList(bmarkNode);
         removeEmpty(dataArray);
         removeEmpty(navArray);
@@ -53,12 +52,14 @@ window.onload = function () {
             el     : '#app',
             data   : function () {
                 return {
-                    isEmpty      : true,
-                    searchValue  : '',
-                    searchReasult: [],
-                    index        : homeIndex,
-                    list         : dataArray,
-                    nav          : navArray,
+                    isEmpty        : true,
+                    isDeleteSuccess: false,
+                    searchValue    : '',
+                    searchReasult  : [],
+                    timer          : null,
+                    index          : homeIndex,
+                    list           : dataArray,
+                    nav            : navArray,
                 }
             },
             watch  : {
@@ -75,6 +76,23 @@ window.onload = function () {
                     chrome.bookmarks.remove(id, function () {
                         self.list[self.index].splice(listItemIndex, 1);
                     });
+
+                    if (self.searchReasult.length > 0) {
+                        for (var i in self.searchReasult) {
+                            if (self.searchReasult[i].id == id) {
+                                self.searchReasult.splice(i, 1);
+                            }
+                        }
+                        if (self.searchReasult.length == 0) {
+                            self.isEmpty = !self.isEmpty;
+                        }
+                    }
+                    self.isDeleteSuccess = true;
+                    clearTimeout(self.timer);
+                    self.timer = setTimeout(function () {
+                        self.isDeleteSuccess = false;
+                        self.timer           = null;
+                    }, 1000);
                 },
                 clickNav      : function (index) {
                     this.index       = index;

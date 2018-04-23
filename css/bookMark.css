@@ -17,6 +17,23 @@ input {
     font-size: 15px;
 }
 
+
+.tip {
+    position: fixed;
+    top: 20px;
+    left: 0;
+    width: 20%;
+    max-width: 273px;
+    right: 0;
+    text-align: center;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 30px;
+    background: #3B7BD6;
+    color: #FFF;
+    letter-spacing: 1px;
+}
+
 .app_header {
     background: #FCFCFA;
     position: fixed;

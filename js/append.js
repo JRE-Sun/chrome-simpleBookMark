@@ -8,6 +8,7 @@ window.onload = function () {
             return resultStr;
         }
 
+
         chrome.storage.local.get('value', function (valueArray) {
             var style       = document.createElement('style');
             style.innerText = iGetInnerText(valueArray.value);

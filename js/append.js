@@ -25,19 +25,21 @@ window.onload = function () {
             fixedDiv      = document.createElement('div'),
             appendContent = document.createElement('div');
 
-        fixedDiv.style.cssText      = 'position:fixed;left:0;right:0;top:0;bottom:0;background:transparent;';
-        appendContent.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:5px;background:#333;';
+        fixedDiv.style.cssText      = 'z-index:9999999;position:fixed;left:0;right:0;top:0;bottom:0;background:transparent;';
+        appendContent.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:5px;background:#333;display: flex;padding: 10px;align-items: center;justify-content: center;';
         fixedDiv.appendChild(appendContent);
         body.appendChild(fixedDiv);
         fixedDiv.style.display = 'none';
         document.addEventListener('mousemove', function (e) {
             if (e.buttons == 2) {
-                fixedDiv.style.display = 'block';
-                endPosition            = {
+                if (isRight || isBottom) {
+                    fixedDiv.style.display = 'block';
+                }
+                endPosition = {
                     x: e.clientX,
                     y: e.clientY,
                 }
-                isMouseDown            = false;
+                isMouseDown = false;
                 // 向右
                 if (endPosition.x - startPosition.x > 50 && !isRight) {
                     var img = document.createElement('img');
@@ -77,6 +79,7 @@ window.onload = function () {
         }
 
         function mouseUpEvent() {
+            fixedDiv.style.display = 'none';
             // 同时为假,直接return
             if (!isBottom && !isRight) {
                 return;

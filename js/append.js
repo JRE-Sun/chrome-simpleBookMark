@@ -46,11 +46,11 @@ document.ready(function () {
         });
     })();
     (function () {
-        var isMouseDown   = false,
-            startPosition = {},
+        var startPosition = {},
             endPosition   = {},
             isRight       = false,
             isBottom      = false,
+            isLeft        = false,
             timer         = null,
             body          = document.querySelector('body'),
             fixedDiv      = document.createElement('div'),
@@ -60,11 +60,16 @@ document.ready(function () {
         appendContent.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:5px;background:#333;display: flex;padding: 10px;align-items: center;justify-content: center;';
         var rightImg                = document.createElement('img');
         rightImg.src                = chrome.extension.getURL('img/right.png');
+        var bottomImg               = document.createElement('img');
+        bottomImg.src               = chrome.extension.getURL('img/down.png');
         var leftImg                 = document.createElement('img');
-        leftImg.src                 = chrome.extension.getURL('img/down.png');
+        leftImg.src                 = chrome.extension.getURL('img/right.png');
         rightImg.style.display      = 'none';
+        bottomImg.style.display     = 'none';
+        leftImg.style.cssText       = 'transform:rotateY(180deg);';
         leftImg.style.display       = 'none';
         appendContent.appendChild(leftImg);
+        appendContent.appendChild(bottomImg);
         appendContent.appendChild(rightImg);
         fixedDiv.appendChild(appendContent);
         body.appendChild(fixedDiv);
@@ -80,23 +85,28 @@ document.ready(function () {
 
         document.addEventListener('mousemove', function (e) {
             if (e.buttons == 2) {
-                if (isRight || isBottom) {
+                if (isRight || isBottom || isLeft) {
                     fixedDiv.style.display = 'block';
                 }
                 endPosition = {
                     x: e.clientX,
                     y: e.clientY,
                 }
-                isMouseDown = false;
                 // 向右
                 if (endPosition.x - startPosition.x > 30 && !isRight) {
                     rightImg.style.display = 'block';
                     isRight                = true;
                 }
+                // 向左
+                if ((startPosition.x > endPosition.x + 30) && !isLeft) {
+                    console.log(startPosition.x, endPosition.x);
+                    leftImg.style.display = 'block';
+                    isLeft                = true;
+                }
                 // 向下
                 if (endPosition.y - startPosition.y > 30 && !isBottom) {
-                    leftImg.style.display = 'block';
-                    isBottom              = true;
+                    bottomImg.style.display = 'block';
+                    isBottom                = true;
                 }
                 clearTimeout(timer);
                 timer = setTimeout(function () {
@@ -117,7 +127,6 @@ document.ready(function () {
 
         document.addEventListener('mousedown', function (e) {
             if (e.button != 2) {
-                isMouseDown = false;
                 return;
             }
             if (isMac == 'Mac') {
@@ -136,7 +145,6 @@ document.ready(function () {
                 x: e.clientX,
                 y: e.clientY,
             }
-            isMouseDown   = true;
         }, false);
 
         function removeContextmenu(e) {
@@ -148,32 +156,38 @@ document.ready(function () {
         function mouseUpEvent() {
             fixedDiv.style.display = 'none';
             // 同时为假,直接return
-            if (!isBottom && !isRight) {
+            if (!isBottom && !isRight && !isLeft) {
                 return;
             }
+            console.log('up');
+            rightImg.style.display  = 'none';
+            bottomImg.style.display = 'none';
+            leftImg.style.display   = 'none';
             document.addEventListener('contextmenu', removeContextmenu, false);
-            var event = '';
-            if (isBottom) {
-                event = 'update';
+            if (isBottom && !isLeft && !isRight) {
+                location.href = location.href;
+                isBottom      = isRight = isLeft = false;
+                document.removeEventListener('contextmenu', removeContextmenu, false);
+                return;
             }
-            if (isBottom && isRight) {
-                event = 'close';
+            if (isLeft && !isBottom && !isRight) {
+                window.history.back();
+                isBottom = isRight = isLeft = false;
+                return;
             }
-            chrome.extension.sendRequest({
-                event: event,
-                url  : location.href
-            }, function (response) {
-                appendContent.innerHTML = '';
-                fixedDiv.style.display  = 'none';
-                if (!response) {
-                    return;
-                }
-                if (response.event == 'update') {
-                    location.href = location.href;
-                    document.removeEventListener('contextmenu', removeContextmenu, false);
-                }
-            });
-            isBottom = isRight = false;
+            if (isRight && !isBottom && !isLeft) {
+                window.history.go(1);
+                isBottom = isRight = isLeft = false;
+                return;
+            }
+            if (isBottom && isRight && !isLeft) {
+                chrome.extension.sendRequest({
+                    event: 'close',
+                    url  : location.href
+                }, function (response) {
+                });
+            }
+            isBottom = isRight = isLeft = false;
         }
 
         document.addEventListener('mouseup', function (e) {

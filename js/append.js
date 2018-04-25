@@ -69,6 +69,15 @@ document.ready(function () {
         fixedDiv.appendChild(appendContent);
         body.appendChild(fixedDiv);
         fixedDiv.style.display = 'none';
+
+        function detectOS() {
+            var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+            if (isMac) {
+                return "Mac";
+            }
+            return 'other';
+        }
+
         document.addEventListener('mousemove', function (e) {
             if (e.buttons == 2) {
                 if (isRight || isBottom) {
@@ -95,10 +104,33 @@ document.ready(function () {
                 }, 2400);
             }
         }, false);
+
+        // 双击次数默认为0
+        var rightMenuClickNums = 0,
+            cliclTimer         = null,
+            isMac              = detectOS();
+        // 当前是mac
+        if (isMac == 'Mac') {
+            // 是mac那么进来直接取消右键菜单,改成双击右键出现菜单
+            document.addEventListener('contextmenu', removeContextmenu, false);
+        }
+
         document.addEventListener('mousedown', function (e) {
             if (e.button != 2) {
                 isMouseDown = false;
                 return;
+            }
+            if (isMac == 'Mac') {
+                rightMenuClickNums = rightMenuClickNums + 1;
+                if (rightMenuClickNums >= 2) {
+                    document.removeEventListener('contextmenu', removeContextmenu, false);
+                    rightMenuClickNums = 0;
+                }
+                clearTimeout(cliclTimer);
+                cliclTimer = setTimeout(function () {
+                    document.addEventListener('contextmenu', removeContextmenu, false);
+                    rightMenuClickNums = 0;
+                }, 300);
             }
             startPosition = {
                 x: e.clientX,

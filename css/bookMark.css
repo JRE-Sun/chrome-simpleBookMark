@@ -17,7 +17,6 @@ input {
     font-size: 15px;
 }
 
-
 .tip {
     position: fixed;
     top: 20px;
@@ -71,10 +70,10 @@ input {
     font-size: 15px;
 }
 
-.app_clear, app_delete {
+.app_clear {
     display: block;
-    width: 27px;
-    height: 27px;
+    width: 30px;
+    height: 30px;
     top: 50%;
     cursor: pointer;
     position: absolute;
@@ -85,7 +84,7 @@ input {
 .app_clear:after, .app_clear:before {
     position: absolute;
     content: '';
-    width: 8px;
+    width: 15px;
     height: 1px;
     background: #333;
     top: 50%;
@@ -136,10 +135,11 @@ input {
     background: #EEE;
     cursor: pointer;
     color: #999;
-    padding: 3px 10px;
+    padding: 4px 10px;
     letter-spacing: 1px;
     border-radius: 3px;
-    font-size: 12px
+    font-size: 12px;
+    margin-left: 15px;
 }
 
 .app_content a:hover .app_delete {
@@ -201,16 +201,34 @@ input {
 }
 
 @media all and (min-width: 1500px) {
+    body {
+        font-size: 18px;
+    }
+
+    .app_header {
+        width: 360px;
+        padding: 0px 30px;
+    }
+
+    .app_content a {
+        font-size: 20px;
+    }
+
     #app {
-        max-width: 100%;
+        padding: 10px 0 30px 385px;
+        max-width: 1400px;
     }
 
-    .app_content span {
-        flex-wrap: wrap;
-        display: flex;
+    .app_content a img {
+        height: 22px;
+        min-width: 22px;
     }
 
-    .app_content_item {
-        width: 45%;
+    #app_search {
+        font-size: 18px;
+    }
+
+    .app_delete {
+        font-size: 14px;
     }
 }

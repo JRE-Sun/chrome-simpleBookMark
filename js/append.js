@@ -40,7 +40,7 @@ document.ready(function () {
 
         chrome.storage.local.get('value', function (valueArray) {
             var style       = document.createElement('style');
-            style.innerText = iGetInnerText(valueArray.value);
+            style.innerText = iGetInnerText(valueArray.value || '');
             document.body.appendChild(style);
         });
     })();

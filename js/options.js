@@ -40,6 +40,6 @@ window.onload = function () {
     });
 
     chrome.storage.local.get('value', function (valueArray) {
-        document.querySelector('.style-value').value = isUndefined(valueArray) || isUndefined(valueArray.value) ? '' : valueArray.value;
+        document.querySelector('.style-value').value = !(isUndefined(valueArray) || isUndefined(valueArray.value)) ? '' : valueArray.value;
     });
 };

@@ -68,10 +68,9 @@ document.ready(function () {
         bottomImg.src               = chrome.extension.getURL('img/down.png');
         var leftImg                 = document.createElement('img');
         leftImg.src                 = chrome.extension.getURL('img/right.png');
-        rightImg.style.display      = 'none';
-        bottomImg.style.display     = 'none';
-        leftImg.style.cssText       = 'transform:rotateY(180deg);';
-        leftImg.style.display       = 'none';
+        rightImg.style.cssText      = 'display:none;margin:0!important;padding:0!important;';
+        bottomImg.style.cssText     = 'display:none;margin:0!important;padding:0!important;';
+        leftImg.style.cssText       = 'display:none;margin:0!important;padding:0!important;transform:rotateY(180deg);';
         canvas.style.display        = 'none';
         appendContent.appendChild(leftImg);
         appendContent.appendChild(bottomImg);

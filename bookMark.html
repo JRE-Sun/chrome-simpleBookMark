@@ -27,7 +27,7 @@
             <div class="app_content_item"
                  v-for="(listItem,listItemIndex) in (searchValue==''?list[index]:searchReasult)"
                  v-bind:key="listItemIndex">
-                <a :title="listItem.url" @click="aClick(listItemIndex)" :class="aClickIndex==listItemIndex?'a-clicked':''" target="_blank" :href="listItem.url"><span class="timer" v-show="index==(nav.length-1)">{{ getFormatTime(listItem.lastVisitTime) }}</span><img :src="listItem.icon" alt="" v-show="index!=(nav.length-1)">{{ listItem.title == '' ? listItem.url : listItem.title }}</a>
+                <a :title="listItem.url" @click="aClick(listItemIndex)" :class="aClickIndex==listItemIndex?'a-clicked':''" target="_blank" :href="listItem.url"><span class="timer" v-show="index==(nav.length-1)">{{ getFormatTime(listItem.lastVisitTime) }}</span><img :src="listItem.icon" alt="" v-show="index!=(nav.length-1)">{{ listItem.title == '' ? getTitle(listItem.url) : listItem.title }}</a>
                 <span v-show="index!=(nav.length-1)" @click="deleteBookMark(listItem.id,listItemIndex)" class="app_delete">删除</span>
             </div>
         </transition-group>

@@ -19,7 +19,11 @@ function keep_two() {
                 activate_tab = false;
             }
 
-            chrome.tabs.create({active: activate_tab, pinned: (w.tabs[0].pinned == false)}, function (tab) {
+            chrome.tabs.create({
+                active  : activate_tab,
+                selected: false,
+                pinned  : (w.tabs[0].pinned == false)
+            }, function (tab) {
                 // save this tab id in case of Close Tabs to The Right.
                 // Chrome will close this tab if that is the case even it's just being
                 // added.
@@ -84,7 +88,3 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
         sendResponse({event: 'update'});
     }
 });
-
-
-
-

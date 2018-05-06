@@ -143,6 +143,18 @@ window.onload = function () {
                         val = '0' + val;
                     }
                     return val;
+                },
+                getTitle(url) {
+                    return this.formatContent(decodeURI(url));
+                },
+                formatContent   : function (value) {
+                    var olderVal = value,
+                        reg      = /[\u4e00-\u9fa5]/g,
+                        value    = value.match(reg);
+                    if (value == null) {
+                        return olderVal;
+                    }
+                    return value.join("");
                 }
             },
             mounted() {
@@ -150,7 +162,6 @@ window.onload = function () {
                 chrome.history.search({
                     text      : '',
                     startTime : 10000 * 60 * 60 * 24 * 7,
-                    // endTime   : new Date('2000/1/1').getTime() * 1,
                     maxResults: 999999999
                 }, function (results) {
                     var everyHistoryNums = self.everyHistoryNums;

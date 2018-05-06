@@ -57,7 +57,7 @@ window.onload = function () {
                     isEmpty         : true,
                     isDeleteSuccess : false,
                     history         : [],
-                    everyHistoryNums: 10000, // 每页1w行历史记录
+                    everyHistoryNums: 1000, // 每页1w行历史记录
                     historyPage     : 0, // 当前历史记录页数
                     searchValue     : '',
                     searchReasult   : [],

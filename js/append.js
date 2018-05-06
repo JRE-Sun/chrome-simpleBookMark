@@ -53,14 +53,9 @@ document.ready(function () {
             timer         = null,
             body          = document.querySelector('body'),
             fixedDiv      = document.createElement('div'),
-            appendContent = document.createElement('div'),
-            canvas        = document.createElement('canvas');
+            appendContent = document.createElement('div');
 
         fixedDiv.style.cssText      = 'z-index:9999999;position:fixed;left:0;right:0;top:0;bottom:0;background:transparent;';
-        canvas.style.cssText        = 'z-index:999999;position:fixed;left:0;top:0;';
-        canvas.id                   = 'ca';
-        canvas.width                = window.innerWidth;
-        canvas.height               = window.innerHeight;
         appendContent.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:5px;background:#333;display: flex;padding: 10px;align-items: center;justify-content: center;';
         var rightImg                = document.createElement('img');
         rightImg.src                = chrome.extension.getURL('img/right.png');
@@ -71,16 +66,12 @@ document.ready(function () {
         rightImg.style.cssText      = 'display:none;margin:0!important;padding:0!important;';
         bottomImg.style.cssText     = 'display:none;margin:0!important;padding:0!important;';
         leftImg.style.cssText       = 'display:none;margin:0!important;padding:0!important;transform:rotateY(180deg);';
-        canvas.style.display        = 'none';
         appendContent.appendChild(leftImg);
         appendContent.appendChild(bottomImg);
         appendContent.appendChild(rightImg);
         fixedDiv.appendChild(appendContent);
         body.appendChild(fixedDiv);
-        body.appendChild(canvas);
         fixedDiv.style.display = 'none';
-        var ca                 = document.querySelector("#ca"),
-            cg                 = ca.getContext("2d");
 
         function detectOS() {
             var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
@@ -102,12 +93,6 @@ document.ready(function () {
                     x: e.clientX,
                     y: e.clientY,
                 }
-                // 画鼠标手势轨迹
-                cg.lineTo(endPosition.x, endPosition.y);
-                cg.stroke();
-                cg.strokeStyle = '#2085C5';
-                cg.lineJoin    = "round";
-                cg.lineWidth   = 4;
                 // 向右
                 if (endPosition.x - startPosition.x > 30 && !isRight) {
                     rightImg.style.display = 'block';
@@ -145,7 +130,6 @@ document.ready(function () {
             if (e.button != 2) {
                 return;
             }
-            ca.style.display = 'block';
             if (isMac == 'Mac') {
                 rightMenuClickNums = rightMenuClickNums + 1;
                 if (rightMenuClickNums >= 2) {
@@ -172,8 +156,6 @@ document.ready(function () {
 
         function mouseUpEvent() {
             fixedDiv.style.display = 'none';
-            ca.style.display       = 'none';
-            ca.height              = ca.height;
             // 同时为假,直接return
             if (!isBottom && !isRight && !isLeft) {
                 return;
@@ -216,13 +198,6 @@ document.ready(function () {
             e.stopPropagation();
             e.preventDefault();
             return false;
-        }, false);
-
-
-        ca.addEventListener('mousedown', function (e) {
-            if (e.buttons == 2) {
-                cg.moveTo(e.clientX, e.clientY);
-            }
         }, false);
     })();
 });

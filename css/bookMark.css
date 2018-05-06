@@ -146,7 +146,7 @@ input {
     background: red;
 }
 
-.app_content a:hover, .app_nav a:hover, .active, .app_delete:hover {
+.app_content a:hover, .app_nav a:hover, .active, .app_delete:hover, .a-clicked {
     text-decoration: none;
     background: #2085C5;
     color: #FFF !important;
@@ -160,6 +160,10 @@ input {
     width: 16px;
     vertical-align: middle;
     min-width: 16px;
+}
+
+.app_content a .timer {
+    min-width: 70px;
 }
 
 .app_empty {
@@ -200,6 +204,26 @@ input {
     opacity: 0;
 }
 
+.page {
+
+}
+
+.page ul {
+    list-style: none;
+    overflow: hidden;
+}
+
+.page li {
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.page li.active, .page li:hover {
+    background: #2085C5;
+    color: #FFF;
+}
+
 @media all and (min-width: 1500px) {
     body {
         font-size: 18px;
@@ -232,3 +256,4 @@ input {
         font-size: 14px;
     }
 }
+

@@ -33,7 +33,8 @@
   "permissions": [
     "bookmarks",
     "storage",
-    "tabs"
+    "tabs",
+    "history"
   ],
   "background": {
     "scripts": [

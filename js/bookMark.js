@@ -30,6 +30,7 @@ window.onload = function () {
                 }
             }
         }
+        navArray.push({id: '0', 'title': '历史记录'});
         var allData = [];
         for (var i in dataArray) {
             if (excludedIndexArray.length > 0) {
@@ -52,14 +53,18 @@ window.onload = function () {
             el     : '#app',
             data   : function () {
                 return {
-                    isEmpty        : true,
-                    isDeleteSuccess: false,
-                    searchValue    : '',
-                    searchReasult  : [],
-                    timer          : null,
-                    index          : homeIndex,
-                    list           : dataArray,
-                    nav            : navArray,
+                    aClickIndex     : -1,
+                    isEmpty         : true,
+                    isDeleteSuccess : false,
+                    history         : [],
+                    everyHistoryNums: 10000, // 每页1w行历史记录
+                    historyPage     : 0, // 当前历史记录页数
+                    searchValue     : '',
+                    searchReasult   : [],
+                    timer           : null,
+                    index           : homeIndex,
+                    list            : dataArray,
+                    nav             : navArray,
                 }
             },
             watch  : {
@@ -68,11 +73,27 @@ window.onload = function () {
                 }
             },
             methods: {
-                clear         : function () {
+                clear           : function () {
                     this.searchValue = '';
+                    this.resetAClickIndex();
                 },
-                deleteBookMark: function (id, listItemIndex) {
+                resetAClickIndex: function () {
+                    this.aClickIndex = -1;
+                },
+                aClick          : function (index) {
+                    this.aClickIndex = index;
+                },
+                clickPage       : function (index) {
+                    this.historyPage      = index;
+                    var length            = this.list.length;
+                    this.list[length - 1] = this.history[index];
+
+                    // 回滚到顶部
+                    document.querySelector('html,body').scrollTop = 0;
+                },
+                deleteBookMark  : function (id, listItemIndex) {
                     var self = this;
+                    self.resetAClickIndex();
                     chrome.bookmarks.remove(id, function () {
                         self.list[self.index].splice(listItemIndex, 1);
                     });
@@ -94,12 +115,14 @@ window.onload = function () {
                         self.timer           = null;
                     }, 1000);
                 },
-                clickNav      : function (index) {
+                clickNav        : function (index) {
+                    this.resetAClickIndex();
                     this.index       = index;
                     this.searchValue = '';
                     this.isEmpty     = !this.isEmpty;
                 },
-                search        : function () {
+                search          : function () {
+                    this.resetAClickIndex();
                     var list = this.list[0],
                         data = [];
                     for (var i in list) {
@@ -109,7 +132,28 @@ window.onload = function () {
                     }
                     this.searchReasult = data;
                     this.isEmpty       = !this.isEmpty;
+                },
+                getFormatTime(time, format) {
+                    time     = Math.ceil(time);
+                    var date = new Date(time);
+                    return this.addZero(date.getMonth() + 1) + '-' + this.addZero(date.getDate());
+                },
+                addZero(val) {
+                    if (val * 1 < 9) {
+                        val = '0' + val;
+                    }
+                    return val;
                 }
+            },
+            mounted() {
+                var self = this;
+                chrome.history.search({text: '', maxResults: 99999}, function (results) {
+                    var everyHistoryNums = self.everyHistoryNums;
+                    for (var i = 0, len = results.length; i < len; i += everyHistoryNums) {
+                        self.history.push(results.slice(i, i + everyHistoryNums));
+                    }
+                    self.list.push(self.history[0]);
+                });
             }
         });
     });

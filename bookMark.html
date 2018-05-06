@@ -27,9 +27,8 @@
             <div class="app_content_item"
                  v-for="(listItem,listItemIndex) in (searchValue==''?list[index]:searchReasult)"
                  v-bind:key="listItemIndex">
-                <a :title="listItem.url" target="_blank" :href="listItem.url"><img :src="listItem.icon" alt="">{{ listItem.title
-                    }}</a>
-                <span @click="deleteBookMark(listItem.id,listItemIndex)" class="app_delete">删除</span>
+                <a :title="listItem.url" @click="aClick(listItemIndex)" :class="aClickIndex==listItemIndex?'a-clicked':''" target="_blank" :href="listItem.url"><span class="timer" v-show="index==(nav.length-1)">{{ getFormatTime(listItem.lastVisitTime) }}</span><img :src="listItem.icon" alt="" v-show="index!=(nav.length-1)">{{ listItem.title == '' ? listItem.url : listItem.title }}</a>
+                <span v-show="index!=(nav.length-1)" @click="deleteBookMark(listItem.id,listItemIndex)" class="app_delete">删除</span>
             </div>
         </transition-group>
         <transition name="fade">
@@ -38,6 +37,11 @@
                 暂无数据!
             </div>
         </transition>
+        <div v-show="index==(nav.length-1) && history.length>1" class="page">
+            <ul>
+                <li @click="clickPage(itemIndex)" :class="historyPage==itemIndex?'active':''" v-for="(item,itemIndex) in history">{{ itemIndex+1 }}</li>
+            </ul>
+        </div>
     </div>
     <div id="app_footer">
         <p>Simple书签 by JreSun</p>

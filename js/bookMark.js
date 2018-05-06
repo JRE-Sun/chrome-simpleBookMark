@@ -147,7 +147,12 @@ window.onload = function () {
             },
             mounted() {
                 var self = this;
-                chrome.history.search({text: '', maxResults: 99999}, function (results) {
+                chrome.history.search({
+                    text      : '',
+                    startTime : 10000 * 60 * 60 * 24 * 7,
+                    // endTime   : new Date('2000/1/1').getTime() * 1,
+                    maxResults: 999999999
+                }, function (results) {
                     var everyHistoryNums = self.everyHistoryNums;
                     for (var i = 0, len = results.length; i < len; i += everyHistoryNums) {
                         self.history.push(results.slice(i, i + everyHistoryNums));

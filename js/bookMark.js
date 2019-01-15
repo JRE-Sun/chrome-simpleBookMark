@@ -1,41 +1,40 @@
 window.onload = function () {
-    function removeEmpty(array) {
-        for (var i = 0; i < array.length; i++) {
-            if (typeof (array[i]) == "undefined") {
-                array.splice(i, 1);
-                i = i - 1;
+    function removeEmpty(arrayList) {
+        return arrayList.filter(n => {
+            if (typeof n !== "undefined") {
+                return n
             }
-        }
+        });
     }
 
-    var dataArray          = [];
-    var navArray           = [];
-    var homeIndex          = 0;
-    var excludedArray      = ['其他'];
-    var excludedIndexArray = [];
-
+    let dataArray          = [];
+    let navArray           = [];
+    let homeIndex          = 0;
+    let excludedArray      = ['其他'];
+    let excludedIndexArray = [];
     chrome.bookmarks.getTree(function (topNode) {
-        var bmarkNode = topNode[0]["children"];
+        let bmarkNode = topNode[0]["children"];
         getInitList(bmarkNode);
-        removeEmpty(dataArray);
-        removeEmpty(navArray);
+        dataArray         = removeEmpty(dataArray);
+        navArray          = removeEmpty(navArray);
         navArray[0].title = '全部书签';
-        for (var i in navArray) {
-            if (navArray[i].title == '首页') {
+        for (let i in navArray) {
+            if (navArray[i].title === '首页') {
                 homeIndex = i;
             }
-            for (var o in excludedArray) {
-                if (navArray[i].title == excludedArray[o]) {
+            for (let o in excludedArray) {
+                if (navArray[i].title === excludedArray[o]) {
                     excludedIndexArray.push(i);
                 }
             }
         }
         navArray.push({id: '0', 'title': '历史记录'});
-        var allData = [];
-        for (var i in dataArray) {
+        let allData          = [];
+        let everyHistoryNums = 200; // 每页200行历史记录
+        for (let i in dataArray) {
             if (excludedIndexArray.length > 0) {
-                for (var p in excludedIndexArray) {
-                    if (excludedIndexArray[p] != i) {
+                for (let p in excludedIndexArray) {
+                    if (excludedIndexArray[p] * 1 !== i * 1) {
                         allData = allData.concat(dataArray[i]);
                     }
                 }
@@ -43,21 +42,19 @@ window.onload = function () {
                 allData = allData.concat(dataArray[i]);
             }
         }
-        dataArray[0] = allData;
-
-        for (var i in dataArray) {
+        dataArray[0]     = allData;
+        let historyArray = [];
+        for (let i in dataArray) {
             dataArray[i].reverse();
         }
-
         new Vue({
             el     : '#app',
             data   : function () {
                 return {
+                    historyTotalPage: 0,
                     aClickIndex     : -1,
                     isEmpty         : true,
                     isDeleteSuccess : false,
-                    history         : [],
-                    everyHistoryNums: 1000, // 每页1w行历史记录
                     historyPage     : 0, // 当前历史记录页数
                     searchValue     : '',
                     searchReasult   : [],
@@ -85,34 +82,33 @@ window.onload = function () {
                 },
                 clickPage       : function (index) {
                     this.historyPage      = index;
-                    var length            = this.list.length;
-                    this.list[length - 1] = this.history[index];
+                    let length            = this.list.length;
+                    this.list[length - 1] = historyArray[index];
 
                     // 回滚到顶部
                     document.querySelector('html,body').scrollTop = 0;
                 },
                 deleteBookMark  : function (id, listItemIndex) {
-                    var self = this;
-                    self.resetAClickIndex();
-                    chrome.bookmarks.remove(id, function () {
-                        self.list[self.index].splice(listItemIndex, 1);
+                    this.resetAClickIndex();
+                    chrome.bookmarks.remove(id, () => {
+                        this.list[this.index].splice(listItemIndex, 1);
                     });
 
-                    if (self.searchReasult.length > 0) {
-                        for (var i in self.searchReasult) {
-                            if (self.searchReasult[i].id == id) {
-                                self.searchReasult.splice(i, 1);
+                    if (this.searchReasult.length > 0) {
+                        for (let i in this.searchReasult) {
+                            if (this.searchReasult[i].id * 1 === id * 1) {
+                                this.searchReasult.splice(i, 1);
                             }
                         }
-                        if (self.searchReasult.length == 0) {
-                            self.isEmpty = !self.isEmpty;
+                        if (this.searchReasult.length === 0) {
+                            this.isEmpty = !this.isEmpty;
                         }
                     }
-                    self.isDeleteSuccess = true;
-                    clearTimeout(self.timer);
-                    self.timer = setTimeout(function () {
-                        self.isDeleteSuccess = false;
-                        self.timer           = null;
+                    this.isDeleteSuccess = true;
+                    clearTimeout(this.timer);
+                    this.timer = setTimeout(() => {
+                        this.isDeleteSuccess = false;
+                        this.timer           = null;
                     }, 1000);
                 },
                 clickNav        : function (index) {
@@ -123,9 +119,9 @@ window.onload = function () {
                 },
                 search          : function () {
                     this.resetAClickIndex();
-                    var list = this.list[0],
+                    let list = this.list[0],
                         data = [];
-                    for (var i in list) {
+                    for (let i in list) {
                         if (list[i].title.toLowerCase().indexOf(this.searchValue.toLowerCase()) > -1) {
                             data.push(list[i]);
                         }
@@ -135,7 +131,7 @@ window.onload = function () {
                 },
                 getFormatTime(time, format) {
                     time     = Math.ceil(time);
-                    var date = new Date(time);
+                    let date = new Date(time);
                     return this.addZero(date.getMonth() + 1) + '-' + this.addZero(date.getDate());
                 },
                 addZero(val) {
@@ -147,10 +143,10 @@ window.onload = function () {
                 getTitle(url) {
                     return this.formatContent(decodeURI(url));
                 },
-                formatContent   : function (value) {
-                    var olderVal = value,
-                        reg      = /[\u4e00-\u9fa5]/g,
-                        value    = value.match(reg);
+                formatContent(value) {
+                    let olderVal = value,
+                        reg      = /[\u4e00-\u9fa5]/g;
+                    value        = value.match(reg);
                     if (value == null) {
                         return olderVal;
                     }
@@ -158,34 +154,60 @@ window.onload = function () {
                 }
             },
             mounted() {
-                var self = this;
-                chrome.history.search({
-                    text      : '',
-                    startTime : 10000 * 60 * 60 * 24 * 7,
-                    maxResults: 999999999
-                }, function (results) {
-                    var everyHistoryNums = self.everyHistoryNums;
-                    for (var i = 0, len = results.length; i < len; i += everyHistoryNums) {
-                        self.history.push(results.slice(i, i + everyHistoryNums));
-                    }
-                    self.list.push(self.history[0]);
+                this.$nextTick(() => {
+                    chrome.storage.local.get('historyStartTime', valueArray => {
+                        let startTime = 2;
+                        let value     = valueArray.historyStartTime;
+                        startTime     = value ? value : startTime;
+                        startTime     = getToData(startTime);
+                        chrome.history.search({
+                            text      : '',
+                            startTime : startTime, // ms
+                            maxResults: 999999999
+                        }, results => {
+                            for (let i = 0, len = results.length; i < len; i += everyHistoryNums) {
+                                historyArray.push(results.slice(i, i + everyHistoryNums));
+                            }
+                            this.list.push(historyArray[0]);
+                            this.historyTotalPage = historyArray.length;
+                        });
+                    });
                 });
             }
         });
     });
 
+    function getToData(toMonth) {
+        toMonth      = toMonth > 12 ? 12 : toMonth;
+        let resultDate, year, month, date, hms;
+        let currDate = new Date();
+        year         = currDate.getFullYear();
+        month        = currDate.getMonth() + 1;
+        date         = currDate.getDate();
+        hms          = currDate.getHours() + ':' + currDate.getMinutes() + ':' + (currDate.getSeconds() < 10 ? '0' + currDate.getSeconds() : currDate.getSeconds());
+        if (toMonth >= month) {
+            month = month - toMonth + 12;
+            year--;
+        } else {
+            month = month - toMonth;
+        }
+        resultDate = year + '-' + month + '-' + date + ' ' + hms;
+        return new Date(resultDate).getTime();
+    }
+
     function find(str, cha, num) {
-        var x = str.indexOf(cha);
-        for (var i = 0; i < num; i++) {
+        let x = str.indexOf(cha);
+        for (let i = 0; i < num; i++) {
             x = str.indexOf(cha, x + 1);
         }
         return x;
     }
 
+
     function getInitList(children) {
-        for (var i in children) {
-            var childrenItem = children[i];
-            if (typeof childrenItem.children != 'undefined') {
+        for (let i in children) {
+            let childrenItem = children[i];
+            if (typeof childrenItem.children !== 'undefined') {
                 navArray[childrenItem.id]  = '';
                 dataArray[childrenItem.id] = [];
                 // 不为空,就是说当前为分类
@@ -200,8 +222,8 @@ window.onload = function () {
                     getInitList(childrenItem);
                     return;
                 }
-                var url   = childrenItem.url;
-                var index = find(url, '/', 2);
+                let url   = childrenItem.url;
+                let index = find(url, '/', 2);
                 // console.log(childrenItem);
                 // http://statics.dnspod.cn/proxy_favicon/_/favicon?domain=
                 dataArray[childrenItem.parentId].push({

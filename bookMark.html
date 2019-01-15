@@ -37,9 +37,9 @@
                 暂无数据!
             </div>
         </transition>
-        <div v-show="index==(nav.length-1) && history.length>1" class="page">
+        <div v-show="index==(nav.length-1) && historyTotalPage>1" class="page">
             <ul>
-                <li @click="clickPage(itemIndex)" :class="historyPage==itemIndex?'active':''" v-for="(item,itemIndex) in history">{{ itemIndex+1 }}</li>
+                <li @click="clickPage(itemIndex)" :class="historyPage==itemIndex?'active':''" v-for="(item,itemIndex) in historyTotalPage">{{ itemIndex+1 }}</li>
             </ul>
         </div>
     </div>

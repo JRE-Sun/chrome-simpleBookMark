@@ -1,11 +1,25 @@
 window.onload = function () {
-    var styleValue    = document.querySelector('.style-value'),
+    let styleValue    = document.querySelector('.style-value'),
         optionsPageId = 0,
         isGetFocus    = false,
+        inputStyle    = document.getElementById("input-style"),
         tip           = document.querySelector('.tip');
 
+
+    inputStyle.addEventListener("change", function () {
+        let grade = inputStyle.options[inputStyle.selectedIndex].value;
+        chrome.storage.local.set({
+            "historyStartTime": grade
+        }, function () {
+            tip.style.display = 'block';
+            setTimeout(function () {
+                tip.style.display = 'none';
+            }, 600);
+        });
+    }, false);
+
     function saveEvent() {
-        chrome.storage.local.set({'value': styleValue.value}, function () {
+        chrome.storage.local.set({"value": styleValue.value}, function () {
             tip.style.display = 'block';
             setTimeout(function () {
                 tip.style.display = 'none';
@@ -33,6 +47,7 @@ window.onload = function () {
         saveEvent();
     }, false);
 
+
     chrome.tabs.onSelectionChanged.addListener(function (tabId) {
         if (optionsPageId != tabId && isGetFocus) {
             styleValue.blur();
@@ -40,6 +55,11 @@ window.onload = function () {
     });
 
     chrome.storage.local.get('value', function (valueArray) {
-        document.querySelector('.style-value').value = !(isUndefined(valueArray) || isUndefined(valueArray.value)) ? '' : valueArray.value;
+        styleValue.value = !(isUndefined(valueArray) || isUndefined(valueArray.value)) ? '' : valueArray.value;
+    });
+
+    chrome.storage.local.get('historyStartTime', function (valueArray) {
+        console.log()
+        inputStyle[(valueArray.historyStartTime || 2) - 1].selected = true;
     });
 };

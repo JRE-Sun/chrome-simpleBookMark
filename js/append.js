@@ -25,11 +25,21 @@
                     clearInterval(t), run();
             }, 0);
     };
-})();
+})();  
 
 document.ready(function() {
     var isHasSpecialSite = location.href.search(/zq/ig) > -1
     if (isHasSpecialSite) return;
+    var allA = document.querySelectorAll('a');
+    setTimeout(function() {
+        for (var i = 0, length = allA.length; i < length; i++) {
+            var item = allA[i];
+            var src = item.src;
+            if (src.search('/#/') != 0) {
+                item.setAttribute('target', '_blank');
+            }
+        }
+    }, 1000);
     (function() {
         function iGetInnerText(testStr) {
             var resultStr = testStr.replace(/\ +/g, ""); // 去掉空格
@@ -40,7 +50,6 @@ document.ready(function() {
         }
 
         chrome.storage.local.get('value', function(valueArray) {
-            console.log(valueArray, 1);
             var style = document.createElement('style');
             style.innerText = iGetInnerText(valueArray.value || '');
             document.body.appendChild(style);
